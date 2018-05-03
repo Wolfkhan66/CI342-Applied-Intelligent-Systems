@@ -20,16 +20,7 @@ class UI {
   setScreen(screen) {
     this.hideAll();
     this.screen = screen;
-    switch (screen) {
-      case "MainMenu":
-        this.showUI("MainMenu");
-        break;
-      case "InGame":
-        this.showUI("InGame");
-        break;
-      default:
-        console.log(screen + " not found");
-    }
+    this.showUI(screen);
   }
 
   createText(name, UI, x, y, string, size) {

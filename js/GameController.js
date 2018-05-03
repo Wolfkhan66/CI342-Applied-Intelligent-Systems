@@ -13,6 +13,10 @@ function main() {
 }
 
 function preload() {
+  // var test = [];
+  // for (var i = 0; i < 17; i++) {
+  //   test.push(new Area(i, 10));
+  // }
   console.log("Loading Assets...");
   // Load game assets \\
   console.log("Assets Loaded.");
@@ -23,6 +27,8 @@ function create() {
   // Instantiate Game Classes \\
   ui = new UI();
   gameWorld = new GameWorld();
+  gameWorld.createMap();
+  console.log(gameWorld.areaMap);
   console.log("Creation complete.");
 
   ui.setScreen("MainMenu");
