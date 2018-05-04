@@ -13,24 +13,22 @@ function main() {
 }
 
 function preload() {
-  // var test = [];
-  // for (var i = 0; i < 17; i++) {
-  //   test.push(new Area(i, 10));
-  // }
   console.log("Loading Assets...");
   // Load game assets \\
+  game.load.image('wall', 'assets/wall.png');
+  game.load.image('floor', 'assets/floor.png');
   console.log("Assets Loaded.");
 }
 
 function create() {
   console.log("Creating World...");
+     game.stage.backgroundColor = "#4488AA";
   // Instantiate Game Classes \\
   ui = new UI();
   gameWorld = new GameWorld();
   gameWorld.createMap();
-  console.log(gameWorld.areaMap);
-  console.log("Creation complete.");
 
+  console.log("Creation complete.");
   ui.setScreen("MainMenu");
 }
 

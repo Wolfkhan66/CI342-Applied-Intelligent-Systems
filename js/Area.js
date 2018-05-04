@@ -19,31 +19,37 @@ class Area {
       row = [];
       for (var x = 0; x < size; x++) {
         tile = 0;
-        this.boundaries.forEach((direction) => {
-          switch (direction) {
-            case "right":
-              if (x == size - 1) {
-                tile = 1;
-              }
-              break;
-            case "left":
-              if (x == 0) {
-                tile = 1;
-              }
-              break;
-            case "up":
-              if (y == 0) {
-                tile = 1;
-              }
-              break;
-            case "down":
-              if (y == size - 1) {
-                tile = 1;
-              }
-              break;
-            default:
-          }
-        });
+        if (this.type === 16) {
+          tile = 1;
+        } else {
+
+
+          this.boundaries.forEach((direction) => {
+            switch (direction) {
+              case "right":
+                if (x == size - 1) {
+                  tile = 1;
+                }
+                break;
+              case "left":
+                if (x == 0) {
+                  tile = 1;
+                }
+                break;
+              case "up":
+                if (y == 0) {
+                  tile = 1;
+                }
+                break;
+              case "down":
+                if (y == size - 1) {
+                  tile = 1;
+                }
+                break;
+              default:
+            }
+          });
+        }
         row.push(tile);
       }
       tilemap.push(row);
@@ -138,16 +144,16 @@ class Area {
         this.boundaries.push("down");
         break;
       case 15:
-        this.boundaries.push("right");
-        this.boundaries.push("left");
-        this.boundaries.push("up");
-        this.boundaries.push("down");
-        break;
-      case 16:
         this.exits.push("right");
         this.exits.push("left");
         this.exits.push("up");
         this.exits.push("down");
+        break;
+      case 16:
+        this.boundaries.push("right");
+        this.boundaries.push("left");
+        this.boundaries.push("up");
+        this.boundaries.push("down");
         break;
       default:
     }

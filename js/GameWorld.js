@@ -3,7 +3,8 @@ class GameWorld {
     console.log("Constructing Game World");
     game.physics.startSystem(Phaser.Physics.ARCADE);
     this.assets = [];
-    this.mapsize = 10;
+    this.mapHeight = 13;
+    this.mapWidth = 20;
     this.areaSize = 5;
     this.areaMap = [];
     this.tilemapArray = [];
@@ -22,10 +23,10 @@ class GameWorld {
     this.prepareAreaMap();
 
     var startingArea = {
-      x: this.getRandomInt(1, this.mapsize - 2),
-      y: this.getRandomInt(1, this.mapsize - 2)
+      x: this.getRandomInt(1, this.mapWidth - 2),
+      y: this.getRandomInt(1, this.mapHeight - 2)
     };
-    this.areaMap[startingArea.y][startingArea.x] = new Area(this.getRandomInt(1, 16), this.areaSize, startingArea.x, startingArea.y);
+    this.areaMap[startingArea.y][startingArea.x] = new Area(this.getRandomInt(1, 15), this.areaSize, startingArea.x, startingArea.y);
 
     var mapComplete = false;
     var currentArea = this.areaMap[startingArea.y][startingArea.x];
@@ -46,25 +47,31 @@ class GameWorld {
   fillTilemap() {
     console.log("filling tilemap");
     var row = [];
-    for (var y = 0; y < this.mapsize * this.areaSize; y++) {
+    for (var y = 0; y < this.mapHeight * this.areaSize; y++) {
       row = [];
-      for (var x = 0; x < this.mapsize * this.areaSize; x++) {
+      for (var x = 0; x < this.mapWidth * this.areaSize; x++) {
         row.push(null);
       }
       gameWorld.tilemapArray.push(row);
     }
 
-    for (var y = 0; y < this.mapsize; y++) {
+    for (var y = 0; y < this.mapHeight; y++) {
       row = [];
-      for (var x = 0; x < this.mapsize; x++) {
+      for (var x = 0; x < this.mapWidth; x++) {
         var area = this.areaMap[y][x]
         if (area == null) {
-          this.areaMap[y][x] = new Area(15, this.areaSize, x, y)
+          this.areaMap[y][x] = new Area(16, this.areaSize, x, y)
           area = this.areaMap[y][x];
         }
         for (var areaY = 0; areaY < area.size; areaY++) {
           for (var areaX = 0; areaX < area.size; areaX++) {
+
             gameWorld.tilemapArray[(y * area.size) + areaY][(x * area.size) + areaX] = area.tilemap[areaY][areaX];
+            if (area.tilemap[areaY][areaX] === 1) {
+              game.add.sprite(((x * area.size) + areaX) * 8, ((y * area.size) + areaY) * 8, 'wall');
+            } else {
+              game.add.sprite(((x * area.size) + areaX) * 8, ((y * area.size) + areaY) * 8, 'floor');
+            }
           }
         }
       }
@@ -74,9 +81,9 @@ class GameWorld {
 
   prepareAreaMap() {
     var row = [];
-    for (var y = 0; y < this.mapsize; y++) {
+    for (var y = 0; y < this.mapHeight; y++) {
       row = [];
-      for (var x = 0; x < this.mapsize; x++) {
+      for (var x = 0; x < this.mapWidth; x++) {
         row.push(null);
       }
       this.areaMap.push(row);
@@ -85,8 +92,8 @@ class GameWorld {
 
   getUnprocessedArea() {
     var area = null;
-    for (var y = 0; y < this.mapsize; y++) {
-      for (var x = 0; x < this.mapsize; x++) {
+    for (var y = 0; y < this.mapHeight; y++) {
+      for (var x = 0; x < this.mapWidth; x++) {
         if (this.areaMap[y][x] != null) {
           if (!this.areaMap[y][x].processed) {
             area = this.areaMap[y][x];
@@ -171,7 +178,7 @@ class GameWorld {
         default:
 
       }
-      if (tile.x >= 0 && tile.x < this.mapsize && tile.y >= 0 && tile.y < this.mapsize) {
+      if (tile.x >= 0 && tile.x < this.mapWidth && tile.y >= 0 && tile.y < this.mapHeight) {
         if (this.areaMap[tile.y][tile.x] == null) {
           adjacent.push(tile);
         }
