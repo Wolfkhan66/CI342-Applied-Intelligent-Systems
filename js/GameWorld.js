@@ -40,6 +40,36 @@ class GameWorld {
         mapComplete = true;
       }
     }
+    this.fillTilemap();
+  }
+
+  fillTilemap() {
+    console.log("filling tilemap");
+    var row = [];
+    for (var y = 0; y < this.mapsize * this.areaSize; y++) {
+      row = [];
+      for (var x = 0; x < this.mapsize * this.areaSize; x++) {
+        row.push(null);
+      }
+      gameWorld.tilemapArray.push(row);
+    }
+
+    for (var y = 0; y < this.mapsize; y++) {
+      row = [];
+      for (var x = 0; x < this.mapsize; x++) {
+        var area = this.areaMap[y][x]
+        if (area == null) {
+          this.areaMap[y][x] = new Area(15, this.areaSize, x, y)
+          area = this.areaMap[y][x];
+        }
+        for (var areaY = 0; areaY < area.size; areaY++) {
+          for (var areaX = 0; areaX < area.size; areaX++) {
+            gameWorld.tilemapArray[(y * area.size) + areaY][(x * area.size) + areaX] = area.tilemap[areaY][areaX];
+          }
+        }
+      }
+    }
+    console.log(this.tilemapArray);
   }
 
   prepareAreaMap() {

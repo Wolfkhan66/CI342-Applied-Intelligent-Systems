@@ -15,9 +15,9 @@ class Area {
     var tilemap = [];
     var row = [];
     var tile = 0;
-    for (var y = 0; y < 10; y++) {
+    for (var y = 0; y < size; y++) {
       row = [];
-      for (var x = 0; x < 10; x++) {
+      for (var x = 0; x < size; x++) {
         tile = 0;
         this.boundaries.forEach((direction) => {
           switch (direction) {
