@@ -8,13 +8,11 @@ class UI {
     this.screen = "";
 
     //MainMenu UI
-    this.createText("MainMenuText", "MainMenu", 400, 300, "This is the Main Menu", 30);
-    this.addEvent("MainMenuText", null, function() {
-      ui.setScreen("InGame");
+    this.createText("GenerateNewText", "MainMenu", 350, 550, "Generate New Map", 30);
+    this.addEvent("GenerateNewText", null, function() {
+      gameWorld.cleanUp();
+      gameWorld.createMap();
     });
-
-    //InGame UI
-
   }
 
   setScreen(screen) {

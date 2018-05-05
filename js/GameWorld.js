@@ -15,7 +15,7 @@ class GameWorld {
   }
 
   cleanUp() {
-    this.assets.forEach(asset => asset.Sprite.destroy());
+    this.assets.forEach(asset => asset.destroy());
     this.assets = [];
   }
 
@@ -46,6 +46,7 @@ class GameWorld {
 
   fillTilemap() {
     console.log("filling tilemap");
+    this.tilemap = [];
     var row = [];
     for (var y = 0; y < this.mapHeight * this.areaSize; y++) {
       row = [];
@@ -68,9 +69,9 @@ class GameWorld {
 
             gameWorld.tilemapArray[(y * area.size) + areaY][(x * area.size) + areaX] = area.tilemap[areaY][areaX];
             if (area.tilemap[areaY][areaX] === 1) {
-              game.add.sprite(((x * area.size) + areaX) * 8, ((y * area.size) + areaY) * 8, 'wall');
+              this.assets.push(game.add.sprite(((x * area.size) + areaX) * 8, ((y * area.size) + areaY) * 8, 'wall'));
             } else {
-              game.add.sprite(((x * area.size) + areaX) * 8, ((y * area.size) + areaY) * 8, 'floor');
+              this.assets.push(game.add.sprite(((x * area.size) + areaX) * 8, ((y * area.size) + areaY) * 8, 'floor'));
             }
           }
         }
@@ -80,6 +81,7 @@ class GameWorld {
   }
 
   prepareAreaMap() {
+    this.areaMap = [];
     var row = [];
     for (var y = 0; y < this.mapHeight; y++) {
       row = [];
