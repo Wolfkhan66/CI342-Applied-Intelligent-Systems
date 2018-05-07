@@ -17,6 +17,7 @@ function preload() {
   // Load game assets \\
   game.load.image('wall', 'assets/wall.png');
   game.load.image('floor', 'assets/floor.png');
+  game.load.image('ai', 'assets/ai.png');
   console.log("Assets Loaded.");
 }
 
@@ -25,8 +26,10 @@ function create() {
      game.stage.backgroundColor = "#4488AA";
   // Instantiate Game Classes \\
   ui = new UI();
+  aStar = new AStar();
   gameWorld = new GameWorld();
   gameWorld.createMap();
+      game.add.sprite(100, 100, 'ai')
 
   console.log("Creation complete.");
   ui.setScreen("MainMenu");
