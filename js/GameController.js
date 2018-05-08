@@ -18,6 +18,7 @@ function preload() {
   game.load.image('wall', 'assets/wall.png');
   game.load.image('floor', 'assets/floor.png');
   game.load.image('ai', 'assets/ai.png');
+  game.load.image('target', 'assets/target.png');
   console.log("Assets Loaded.");
 }
 
@@ -29,12 +30,11 @@ function create() {
   aStar = new AStar();
   gameWorld = new GameWorld();
   gameWorld.createMap();
-      game.add.sprite(100, 100, 'ai')
 
   console.log("Creation complete.");
   ui.setScreen("MainMenu");
 }
 
 function update() {
-
+  gameWorld.update();
 }
