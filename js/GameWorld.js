@@ -19,7 +19,7 @@ class GameWorld {
     if (this.pathFound) {
       if (this.path[0] != null && !this.tweenActive) {
         this.ai.tween = game.add.tween(this.ai);
-        var duration = 100;
+        var duration = 50;
         this.ai.tween.to({
           x: this.path[0].x * 8,
           y: this.path[0].y * 8
@@ -38,6 +38,8 @@ class GameWorld {
     game.tweens.removeAll();
     this.assets.forEach(asset => asset.destroy());
     this.assets = [];
+    this.mapGenerator.tiles.forEach(tile => tile.sprite.destroy());
+        this.mapGenerator.tiles = [];
     this.target = null;
     this.ai = null;
     this.tweenActive = false;
