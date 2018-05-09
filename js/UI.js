@@ -22,7 +22,7 @@ class UI {
     this.createText("heightText", "InGame", 70, 565, mapGenerator.mapHeight, 18);
     this.createSprite("heightUpButton", "InGame", 100, 553, 21, 19, 'buttonUp');
     this.addEvent("heightUpButton", null, function() {
-      if (mapGenerator.mapHeight < 40) {
+      if (mapGenerator.mapHeight < 25) {
         mapGenerator.mapHeight++;
         ui.setText("heightText", mapGenerator.mapHeight);
       }
@@ -38,7 +38,7 @@ class UI {
     this.createText("widthText", "InGame", 184, 565, mapGenerator.mapWidth, 18);
     this.createSprite("widthUpButton", "InGame", 214, 553, 21, 19, 'buttonUp');
     this.addEvent("widthUpButton", null, function() {
-      if (mapGenerator.mapWidth < 40) {
+      if (mapGenerator.mapWidth < 25) {
         mapGenerator.mapWidth++;
         ui.setText("widthText", mapGenerator.mapWidth);
       }
@@ -70,7 +70,7 @@ class UI {
     this.createText("areaSizeText", "InGame", 412, 565, gameWorld.areaSize, 18);
     this.createSprite("areaSizeUpButton", "InGame", 442, 553, 21, 19, 'buttonUp');
     this.addEvent("areaSizeUpButton", null, function() {
-      if (gameWorld.areaSize < 10) {
+      if (gameWorld.areaSize < 8) {
         gameWorld.areaSize++;
         ui.setText("areaSizeText", gameWorld.areaSize);
       }
