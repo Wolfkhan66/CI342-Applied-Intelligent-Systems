@@ -7,12 +7,77 @@ class UI {
     this.elements = [];
     this.screen = "";
 
-    //MainMenu UI
-    this.createText("GenerateNewText", "MainMenu", 350, 550, "Generate New Map", 30);
-    this.addEvent("GenerateNewText", null, function() {
+    //InGame UI
+    this.createSprite("Toolbar", "InGame", 0, 548, 800, 52, 'toolbar');
+    this.createSprite("newMapButton", "InGame", 466, 552, 210, 44, 'newMapUp');
+    this.addEvent("newMapButton", function() {
+      ui.loadSpriteTexture("newMapButton", 'newMapDown');
+    }, function() {
+      ui.loadSpriteTexture("newMapButton", 'newMapUp');
       gameWorld.cleanUp();
       gameWorld.createMap();
+      ui.showUI("InGame");
     });
+
+    this.createText("heightText", "InGame", 70, 565, mapGenerator.mapHeight, 18);
+    this.createSprite("heightUpButton", "InGame", 100, 553, 21, 19, 'buttonUp');
+    this.addEvent("heightUpButton", null, function() {
+      mapGenerator.mapHeight++;
+      ui.setText("heightText", mapGenerator.mapHeight);
+    });
+    this.createSprite("heightDownButton", "InGame", 100, 576, 21, 19, 'buttonDown');
+    this.addEvent("heightDownButton", null, function() {
+      mapGenerator.mapHeight--;
+      ui.setText("heightText", mapGenerator.mapHeight);
+    });
+
+    this.createText("widthText", "InGame", 184, 565, mapGenerator.mapWidth, 18);
+    this.createSprite("widthUpButton", "InGame", 214, 553, 21, 19, 'buttonUp');
+    this.addEvent("widthUpButton", null, function() {
+      mapGenerator.mapWidth++;
+      ui.setText("widthText", mapGenerator.mapWidth);
+    });
+    this.createSprite("widthDownButton", "InGame", 214, 576, 21, 19, 'buttonDown');
+    this.addEvent("widthDownButton", null, function() {
+      mapGenerator.mapWidth--;
+      ui.setText("widthText", mapGenerator.mapWidth);
+    });
+
+    this.createText("minimumText", "InGame", 298, 565, mapGenerator.minimumAreas, 18);
+    this.createSprite("minimumUpButton", "InGame", 328, 553, 21, 19, 'buttonUp');
+    this.addEvent("minimumUpButton", null, function() {
+      mapGenerator.minimumAreas++;
+      ui.setText("minimumText", mapGenerator.minimumAreas);
+    });
+    this.createSprite("minimumDownButton", "InGame", 328, 576, 21, 19, 'buttonDown');
+    this.addEvent("minimumDownButton", null, function() {
+      mapGenerator.minimumAreas--;
+      ui.setText("minimumText", mapGenerator.minimumAreas);
+    });
+
+    this.createText("areaSizeText", "InGame", 412, 565, gameWorld.areaSize, 18);
+    this.createSprite("areaSizeUpButton", "InGame", 442, 553, 21, 19, 'buttonUp');
+    this.addEvent("areaSizeUpButton", null, function() {
+      gameWorld.areaSize++;
+      ui.setText("areaSizeText", gameWorld.areaSize);
+    });
+    this.createSprite("areaSizeDownButton", "InGame", 442, 576, 21, 19, 'buttonDown');
+    this.addEvent("areaSizeDownButton", null, function() {
+      gameWorld.areaSize--;
+      ui.setText("areaSizeText", gameWorld.areaSize);
+    });
+
+    this.createSprite("zoomInButton", "InGame", 768, 553, 21, 19, 'buttonUp');
+    this.addEvent("zoomInButton", null, function() {
+      gameWorld.assetGroup.scale.x += 0.04;
+      gameWorld.assetGroup.scale.y += 0.04;
+    });
+    this.createSprite("zoomOutButton", "InGame", 768, 576, 21, 19, 'buttonDown');
+    this.addEvent("zoomOutButton", null, function() {
+      gameWorld.assetGroup.scale.x -= 0.04;
+      gameWorld.assetGroup.scale.y -= 0.04;
+    });
+
   }
 
   setScreen(screen) {
@@ -24,8 +89,10 @@ class UI {
   createText(name, UI, x, y, string, size) {
     var textObject = game.add.text(x, y, string, {
       font: size + 'px Arial',
-      fill: '#ffffff'
+      fill: '#000'
     });
+    textObject.fixedToCamera = true;
+    textObject.cameraOffset.setTo(x, y);
     this.elements.push({
       Name: name,
       UI: UI,
@@ -38,11 +105,29 @@ class UI {
     var sprite = game.add.sprite(x, y, image);
     sprite.width = width;
     sprite.height = height;
+    sprite.fixedToCamera = true;
+    sprite.cameraOffset.setTo(x, y);
     this.elements.push({
       Name: name,
       UI: UI,
       Type: "Sprite",
       Object: sprite
+    });
+  }
+
+  loadSpriteTexture(name, image) {
+    this.elements.forEach((element) => {
+      if (element.Name == name) {
+        element.Object.loadTexture(image);
+      }
+    });
+  }
+
+  setText(name, string) {
+    this.elements.forEach((element) => {
+      if (element.Name == name) {
+        element.Object.text = string;
+      }
     });
   }
 
@@ -65,6 +150,7 @@ class UI {
     this.elements.forEach(function(element) {
       if (element.UI == UIType) {
         element.Object.visible = true;
+        element.Object.bringToTop();
       }
     });
   }

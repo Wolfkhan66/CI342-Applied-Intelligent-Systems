@@ -19,22 +19,53 @@ function preload() {
   game.load.image('floor', 'assets/floor.png');
   game.load.image('ai', 'assets/ai.png');
   game.load.image('target', 'assets/target.png');
+  game.load.image('toolbar', 'assets/toolbar.png');
+  game.load.image('buttonDown','assets/buttonDown.png');
+  game.load.image('buttonUp', 'assets/buttonUp.png');
+  game.load.image('newMapDown','assets/newMapDown.png');
+  game.load.image('newMapUp', 'assets/newMapUp.png');
   console.log("Assets Loaded.");
 }
 
 function create() {
   console.log("Creating World...");
-     game.stage.backgroundColor = "#4488AA";
+  game.stage.backgroundColor = "#ccccff";
+  game.camera.bounds = null;
+  game.input.mouse.mouseWheelCallback = mouseWheel;
   // Instantiate Game Classes \\
-  ui = new UI();
-  aStar = new AStar();
+  mapGenerator = new MapGenerator();
   gameWorld = new GameWorld();
+  aStar = new AStar();
+  ui = new UI();
   gameWorld.createMap();
 
   console.log("Creation complete.");
-  ui.setScreen("MainMenu");
+  ui.setScreen("InGame");
+}
+
+function mouseWheel(event) {
+  if(game.input.mouse.wheelDelta === Phaser.Mouse.WHEEL_UP) {
+    gameWorld.assetGroup.scale.x += 0.04;
+    gameWorld.assetGroup.scale.y += 0.04;
+  } else {
+    gameWorld.assetGroup.scale.x -= 0.04;
+    gameWorld.assetGroup.scale.y -= 0.04;
+  }
 }
 
 function update() {
+  var cursors = game.input.keyboard.createCursorKeys();
+  if (cursors.left.isDown) {
+    game.camera.x -= 2;
+  }
+  if (cursors.right.isDown) {
+    game.camera.x += 2;
+  }
+  if (cursors.up.isDown) {
+    game.camera.y -= 2;
+  }
+  if (cursors.down.isDown) {
+    game.camera.y += 2;
+  }
   gameWorld.update();
 }

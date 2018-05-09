@@ -4,16 +4,18 @@ class GameWorld {
     game.physics.startSystem(Phaser.Physics.ARCADE);
     this.target = null;
     this.ai = null;
-    this.mapGenerator = new MapGenerator();
     this.pathFound = false;
     this.path = [];
-    this.assets = [];
     this.tweenActive = false;
+    this.assetGroup = game.add.group();
+    this.tilemapArray = [];
+    this.tileSize = 8;
+    this.areaSize = 5;
   }
 
   update() {
     if (this.target != null && this.pathFound == false) {
-      this.path = aStar.calculatePath(this.ai, this.target, this.mapGenerator.tilemapArray);
+      this.path = aStar.calculatePath(this.ai, this.target, this.tilemapArray);
       this.pathFound = true;
     }
     if (this.pathFound) {
@@ -21,8 +23,8 @@ class GameWorld {
         this.ai.tween = game.add.tween(this.ai);
         var duration = 50;
         this.ai.tween.to({
-          x: this.path[0].x * 8,
-          y: this.path[0].y * 8
+          x: this.path[0].x * this.tileSize,
+          y: this.path[0].y * this.tileSize
         }, duration);
         this.ai.tween.start();
         this.tweenActive = true;
@@ -36,10 +38,7 @@ class GameWorld {
 
   cleanUp() {
     game.tweens.removeAll();
-    this.assets.forEach(asset => asset.destroy());
-    this.assets = [];
-    this.mapGenerator.tiles.forEach(tile => tile.sprite.destroy());
-        this.mapGenerator.tiles = [];
+    this.assetGroup.destroy(true, true);
     this.target = null;
     this.ai = null;
     this.tweenActive = false;
@@ -52,30 +51,77 @@ class GameWorld {
     if (this.target != null) {
       this.target.destroy();
     }
-    this.target = game.add.sprite(sprite.x * gameWorld.mapGenerator.tileSize, sprite.y * gameWorld.mapGenerator.tileSize, 'target')
-    this.assets.push(this.target);
+    this.target = this.assetGroup.create(sprite.x, sprite.y, 'target')
   }
 
   createMap() {
-    this.mapGenerator.createMap();
-    this.mapGenerator.fillTilemap();
+    mapGenerator.createMap();
+    this.fillTilemap();
     this.createAISprite();
   }
 
   createAISprite() {
-    var x = this.mapGenerator.getRandomInt(0, this.mapGenerator.mapWidth - 1);
-    var y = this.mapGenerator.getRandomInt(0, this.mapGenerator.mapHeight - 1);
-    if (this.mapGenerator.areaMap[y][x].type != 16) {
+    var x = mapGenerator.getRandomInt(0, mapGenerator.mapWidth - 1);
+    var y = mapGenerator.getRandomInt(0, mapGenerator.mapHeight - 1);
+    if (mapGenerator.areaMap[y][x].type != 16) {
       if (this.ai == null) {
-        this.ai = game.add.sprite(((x * this.mapGenerator.areaSize) * 8) + 16, ((y * this.mapGenerator.areaSize) * 8) + 16, 'ai')
+        this.ai = this.assetGroup.create(((x * this.areaSize) * this.tileSize) + 16, ((y * this.areaSize) * this.tileSize) + 16, 'ai');
       } else {
-        this.ai.x = ((x * this.mapGenerator.areaSize) * 8) + 16;
-        this.ai.y = ((y * this.mapGenerator.areaSize) * 8) + 16;
+        this.ai.x = ((x * this.areaSize) * this.tileSize) + 16;
+        this.ai.y = ((y * this.areaSize) * this.tileSize) + 16;
         this.ai.bringToTop();
       }
     } else {
       this.createAISprite();
-      this.assets.push(this.ai);
     }
   }
+
+  fillTilemap() {
+    console.log("filling tilemap");
+    this.tilemapArray = [];
+    var row = [];
+    for (var y = 0; y < mapGenerator.mapHeight * this.areaSize; y++) {
+      row = [];
+      for (var x = 0; x < mapGenerator.mapWidth * this.areaSize; x++) {
+        row.push(null);
+      }
+      gameWorld.tilemapArray.push(row);
+    }
+
+    for (var y = 0; y < mapGenerator.mapHeight; y++) {
+      row = [];
+      for (var x = 0; x < mapGenerator.mapWidth; x++) {
+        var area = mapGenerator.areaMap[y][x]
+        if (area == null) {
+          mapGenerator.areaMap[y][x] = new Area(16, this.areaSize, x, y)
+          area = mapGenerator.areaMap[y][x];
+        }
+        for (var areaY = 0; areaY < area.size; areaY++) {
+          for (var areaX = 0; areaX < area.size; areaX++) {
+            gameWorld.tilemapArray[(y * area.size) + areaY][(x * area.size) + areaX] = area.tilemap[areaY][areaX];
+            if (area.tilemap[areaY][areaX] === 1) {
+              this.createTile(((x * area.size) + areaX), ((y * area.size) + areaY), 'wall', area.tilemap[areaY][areaX], area.type);
+            } else {
+              this.createTile(((x * area.size) + areaX), ((y * area.size) + areaY), 'floor', area.tilemap[areaY][areaX], area.type);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  createTile(x, y, image, type, area) {
+    if(area != 16){
+    x = x * this.tileSize;
+    y = y * this.tileSize
+    var tile = this.assetGroup.create(x, y, image);
+    if (type == 0) {
+      tile.inputEnabled = true;
+      tile.events.onInputUp.add(function() {
+        gameWorld.createTarget(tile);
+      }, this);
+    }
+  }
+  }
+
 }

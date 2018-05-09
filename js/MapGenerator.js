@@ -1,98 +1,46 @@
 class MapGenerator {
   constructor() {
-    this.mapHeight = 13;
-    this.mapWidth = 20;
-    this.areaSize = 5;
+    this.mapHeight = 10;
+    this.mapWidth = 10;
     this.areaMap = [];
-    this.tilemapArray = [];
-    this.tiles = [];
-    this.tileSize = 8;
+    this.minimumAreas = 10;
   }
 
   createMap() {
     this.prepareAreaMap();
-
-    var minimumAreas = 10;
     var total = 0;
     var startingArea = {
       x: this.getRandomInt(1, this.mapWidth - 2),
       y: this.getRandomInt(1, this.mapHeight - 2)
     };
-    this.areaMap[startingArea.y][startingArea.x] = new Area(this.getRandomInt(1, 15), this.areaSize, startingArea.x, startingArea.y);
+    this.areaMap[startingArea.y][startingArea.x] = new Area(this.getRandomInt(1, 15), gameWorld.areaSize, startingArea.x, startingArea.y);
 
     var mapComplete = false;
     var currentArea = this.areaMap[startingArea.y][startingArea.x];
     while (!mapComplete) {
-      var adjacent = this.getAdjacent(currentArea);
-      if (adjacent != null) {
-        adjacent.forEach((tile) => {
-        gameWorld.mapGenerator.areaMap[tile.y][tile.x] = gameWorld.mapGenerator.generateArea(tile);
-        });
-      }
-      currentArea.processed = true;
-      total++;
-      currentArea = this.getUnprocessedArea();
-      if (currentArea == null) {
-        if (total < minimumAreas) {
+      if (currentArea != null) {
+        var adjacent = this.getAdjacent(currentArea);
+        if (adjacent != null) {
+          adjacent.forEach((tile) => {
+            mapGenerator.areaMap[tile.y][tile.x] = mapGenerator.generateArea(tile);
+          });
+        }
+        currentArea.processed = true;
+        total++;
+        currentArea = this.getUnprocessedArea();
+      } else {
+        if (total < this.minimumAreas) {
+          // Needs Refinement:
+          // Find area with less than 4 exits.
+          // replace with area with same exits plus 1 more.
+          // reprocess to see if areas can branch off changed area.
+          // repeat until minimum is met
           this.createMap();
         } else {
           mapComplete = true;
         }
       }
     }
-  }
-
-  fillTilemap() {
-    console.log("filling tilemap");
-    this.tilemapArray = [];
-    var row = [];
-    for (var y = 0; y < this.mapHeight * this.areaSize; y++) {
-      row = [];
-      for (var x = 0; x < this.mapWidth * this.areaSize; x++) {
-        row.push(null);
-      }
-      gameWorld.mapGenerator.tilemapArray.push(row);
-    }
-
-    for (var y = 0; y < this.mapHeight; y++) {
-      row = [];
-      for (var x = 0; x < this.mapWidth; x++) {
-        var area = this.areaMap[y][x]
-        if (area == null) {
-          this.areaMap[y][x] = new Area(16, this.areaSize, x, y)
-          area = this.areaMap[y][x];
-        }
-        for (var areaY = 0; areaY < area.size; areaY++) {
-          for (var areaX = 0; areaX < area.size; areaX++) {
-            gameWorld.mapGenerator.tilemapArray[(y * area.size) + areaY][(x * area.size) + areaX] = area.tilemap[areaY][areaX];
-            if (area.tilemap[areaY][areaX] === 1) {
-              this.tiles.push(this.createTile(((x * area.size) + areaX), ((y * area.size) + areaY), 'wall', area.tilemap[areaY][areaX]));
-            } else {
-              this.tiles.push(this.createTile(((x * area.size) + areaX), ((y * area.size) + areaY), 'floor', area.tilemap[areaY][areaX]));
-            }
-          }
-        }
-      }
-    }
-  }
-
-  createTile(x, y, image, type) {
-    x = x * gameWorld.mapGenerator.tileSize;
-    y = y * gameWorld.mapGenerator.tileSize
-    var tile = {
-      id: gameWorld.mapGenerator.tiles.length,
-      x: x / gameWorld.mapGenerator.tileSize,
-      y: y / gameWorld.mapGenerator.tileSize,
-      sprite: game.add.sprite(x , y, image),
-      type:type
-    }
-    if (type == 0) {
-      tile.sprite.inputEnabled = true;
-      tile.sprite.events.onInputUp.add(function() {
-        gameWorld.createTarget(tile);
-      }, this);
-    }
-    return tile;
   }
 
   prepareAreaMap() {
@@ -125,7 +73,7 @@ class MapGenerator {
     var areaFound = false;
 
     while (!areaFound) {
-      var area = new Area(this.getRandomInt(1, 16), this.areaSize, tile.x, tile.y);
+      var area = new Area(this.getRandomInt(1, 16), gameWorld.areaSize, tile.x, tile.y);
 
       switch (tile.direction) {
         case "up":
@@ -195,6 +143,7 @@ class MapGenerator {
           default:
 
         }
+        // if the tile is within the array bounds.
         if (tile.x >= 0 && tile.x < this.mapWidth && tile.y >= 0 && tile.y < this.mapHeight) {
           if (this.areaMap[tile.y][tile.x] == null) {
             adjacent.push(tile);

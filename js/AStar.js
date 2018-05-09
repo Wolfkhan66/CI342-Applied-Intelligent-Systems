@@ -18,12 +18,12 @@ class AStar {
   calculatePath(startingTile, targetTile, tilemap) {
     this.reset();
     var start = {
-      x: Math.round(startingTile.x / 8),
-      y: Math.round(startingTile.y / 8)
+      x: Math.round(startingTile.x / gameWorld.tileSize),
+      y: Math.round(startingTile.y / gameWorld.tileSize)
     }
     var target = {
-      x: targetTile.x / 8,
-      y: targetTile.y / 8
+      x: targetTile.x / gameWorld.tileSize,
+      y: targetTile.y / gameWorld.tileSize
     }
 
     this.currentTile.x = start.x;
@@ -130,7 +130,7 @@ class AStar {
         })
       }
     }
-    if (this.currentTile.x < ((gameWorld.mapGenerator.mapWidth * gameWorld.mapGenerator.areaSize) -1)) {
+    if (this.currentTile.x < ((mapGenerator.mapWidth * gameWorld.areaSize) -1)) {
       if (tilemap[this.currentTile.y][this.currentTile.x + 1] === 0) {
         tiles.push({
           x: this.currentTile.x + 1,
@@ -148,7 +148,7 @@ class AStar {
         })
       }
     }
-    if (this.currentTile.y < ((gameWorld.mapGenerator.mapHeight * gameWorld.mapGenerator.areaSize) - 1)) {
+    if (this.currentTile.y < ((mapGenerator.mapHeight * gameWorld.areaSize) - 1)) {
       if (tilemap[this.currentTile.y + 1][this.currentTile.x] === 0) {
         tiles.push({
           x: this.currentTile.x,
