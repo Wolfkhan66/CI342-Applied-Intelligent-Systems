@@ -55,13 +55,13 @@ function mouseWheel(event) {
 
 function update() {
   var cursors = game.input.keyboard.createCursorKeys();
-  if (cursors.left.isDown) {
+  if (cursors.left.isDown && game.camera.x > 0) {
     game.camera.x -= 2;
   }
   if (cursors.right.isDown) {
     game.camera.x += 2;
   }
-  if (cursors.up.isDown) {
+  if (cursors.up.isDown && game.camera.y > 0) {
     game.camera.y -= 2;
   }
   if (cursors.down.isDown) {
