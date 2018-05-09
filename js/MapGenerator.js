@@ -30,17 +30,91 @@ class MapGenerator {
         currentArea = this.getUnprocessedArea();
       } else {
         if (total < this.minimumAreas) {
-          // Needs Refinement:
-          // Find area with less than 4 exits.
-          // replace with area with same exits plus 1 more.
-          // reprocess to see if areas can branch off changed area.
-          // repeat until minimum is met
-          this.createMap();
+          this.replaceProcessedArea();
+          currentArea = this.getUnprocessedArea();
+          total --;
         } else {
           mapComplete = true;
         }
       }
     }
+  }
+
+  replaceProcessedArea() {
+    var areaReplaced = false;
+    loop1:
+      for (var y = 0; y < this.mapHeight; y++) {
+        loop2:
+          for (var x = 0; x < this.mapWidth; x++) {
+            if (this.areaMap[y][x] != null) {
+              var exits = this.areaMap[y][x].exits;
+              if (exits.length < 4) {
+                if (this.areaMap[y][x].y > 0) {
+                  if (!exits.includes("up")) {
+                    if (this.areaMap[y - 1][x] == null) {
+                      this.areaMap[y][x] = this.switchAreaType(this.areaMap[y][x], "up");
+                      areaReplaced = true;
+                      break loop2;
+                    }
+                  }
+                }
+                if (this.areaMap[y][x].y < (mapGenerator.mapHeight - 1)) {
+                  if (!exits.includes("down")) {
+                    if (this.areaMap[y + 1][x] == null) {
+                      this.areaMap[y][x] = this.switchAreaType(this.areaMap[y][x], "down");
+                      areaReplaced = true;
+                      break loop2;
+                    }
+                  }
+                }
+                if (this.areaMap[y][x].x > 0) {
+                  if (!exits.includes("left")) {
+                    if (this.areaMap[y][x - 1] == null) {
+                      this.areaMap[y][x] = this.switchAreaType(this.areaMap[y][x], "left");
+                      areaReplaced = true;
+                      break loop2;
+                    }
+                  }
+                }
+                if (this.areaMap[y][x].x < (mapGenerator.mapWidth - 1)) {
+                  if (!exits.includes("right")) {
+                    if (this.areaMap[y][x + 1] == null) {
+                      this.areaMap[y][x] = this.switchAreaType(this.areaMap[y][x], "right");
+                      areaReplaced = true;
+                      break loop2;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        if (areaReplaced == true) {
+          break loop1;
+        }
+      }
+  }
+
+  switchAreaType(area, direction) {
+    var exitsInNewArea = true;
+    var newArea;
+    loop:
+      for (var i = 1; i < 16; i++) {
+        newArea = new Area(i, gameWorld.areaSize, area.x, area.y);
+        if (newArea.exits.includes(direction)) {
+          area.exits.forEach((exit) => {
+            if (!newArea.exits.includes(exit)) {
+              exitsInNewArea = false;
+            }
+          });
+        }
+        else{
+          exitsInNewArea = false;
+        }
+        if (exitsInNewArea) {
+          break loop;
+        }
+      }
+    return newArea;
   }
 
   prepareAreaMap() {
