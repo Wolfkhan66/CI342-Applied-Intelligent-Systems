@@ -1,30 +1,67 @@
 <!doctype html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8" />
-	  <script type="text/javascript" src="libs/phaser.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-    <script src="libs/jquery-3.2.1.min.js"></script>
-    <script src="libs/bootstrap.min.js"></script>
+	<script type="text/javascript" src="libs/phaser.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+	<script src="libs/jquery-3.2.1.min.js"></script>
+	<script src="libs/bootstrap.min.js"></script>
 
-<p></p>
-        <div class="panel panel-primary">
-            <div class="panel-heading"></div>
-            <div class="panel-body well-lg">
-                <div id="GameWindow">
-                </div>
-            </div>
-        </div>
-    </div>
+	<p></p>
+	<div class="col-md-2">
+	</div>
+	<div class="col-md-8">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="panel panel-default">
+					<div class="panel-heading"><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span> Map Generator and A* pathfinder</div>
+					<div class="panel-body text-center">
+						I created this website for my university Applied Intelligent Systems module.
+					</div>
+				</div>
+			</div>
+		</div>
+		<p></p>
+		<div class="row">
+			<div class="col-md-9">
+				<div class="panel panel-primary">
+					<div class="panel-heading"></div>
+					<div class="panel-body well-lg">
+						<div id="GameWindow">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="panel panel-info">
+					<div class="panel-heading"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Instructions </div>
+					<div class="panel-body well-sm">
+						<div>
+							<ul>
+								<li>Use the arrow keys to move the camera</li>
+								<li>You can zoom in and out using the UI buttons or the mouse wheel</li>
+								<li>Click anywhere to set a target for AI. Using A* the AI will move to the target. </li>
+								<li>You can tweak the map height, width, area size and the minimum number of areas using the UI buttons </li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-2">
+	</div>
 
-<script type="text/javascript" src="js/Area.js"></script>
-<script type="text/javascript" src="js/AStar.js"></script>
-<script type="text/javascript" src="js/UI.js"></script>
-<script type="text/javascript" src="js/GameWorld.js"></script>
-<script type="text/javascript" src="js/GameController.js"></script>
-<script type="text/javascript" src="js/MapGenerator.js"></script>
-<script type="text/javascript">
-    window.onload = main();
-</script>
-</body>
+	<script type="text/javascript" src="js/Area.js"></script>
+	<script type="text/javascript" src="js/AStar.js"></script>
+	<script type="text/javascript" src="js/UI.js"></script>
+	<script type="text/javascript" src="js/GameWorld.js"></script>
+	<script type="text/javascript" src="js/GameController.js"></script>
+	<script type="text/javascript" src="js/MapGenerator.js"></script>
+	<script type="text/javascript">
+		window.onload = main();
+	</script>
+	</body>
+
 </html>
