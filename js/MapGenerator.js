@@ -7,6 +7,10 @@ class MapGenerator {
   }
 
   createMap() {
+    if (this.minimumAreas > (this.mapWidth * this.mapHeight)) {
+      this.minimumAreas = (this.mapWidth * this.mapHeight) / 2;
+      ui.setText("minimumText", mapGenerator.minimumAreas);
+    }
     this.prepareAreaMap();
     var total = 0;
     var startingArea = {
@@ -32,7 +36,7 @@ class MapGenerator {
         if (total < this.minimumAreas) {
           this.replaceProcessedArea();
           currentArea = this.getUnprocessedArea();
-          total --;
+          total--;
         } else {
           mapComplete = true;
         }
@@ -44,50 +48,49 @@ class MapGenerator {
     var areaReplaced = false;
     loop1:
       for (var y = 0; y < this.mapHeight; y++) {
-        loop2:
-          for (var x = 0; x < this.mapWidth; x++) {
-            if (this.areaMap[y][x] != null) {
-              var exits = this.areaMap[y][x].exits;
-              if (exits.length < 4) {
-                if (this.areaMap[y][x].y > 0) {
-                  if (!exits.includes("up")) {
-                    if (this.areaMap[y - 1][x] == null) {
-                      this.areaMap[y][x] = this.switchAreaType(this.areaMap[y][x], "up");
-                      areaReplaced = true;
-                      break loop2;
-                    }
+        loop2: for (var x = 0; x < this.mapWidth; x++) {
+          if (this.areaMap[y][x] != null) {
+            var exits = this.areaMap[y][x].exits;
+            if (exits.length < 4) {
+              if (this.areaMap[y][x].y > 0) {
+                if (!exits.includes("up")) {
+                  if (this.areaMap[y - 1][x] == null) {
+                    this.areaMap[y][x] = this.switchAreaType(this.areaMap[y][x], "up");
+                    areaReplaced = true;
+                    break loop2;
                   }
                 }
-                if (this.areaMap[y][x].y < (mapGenerator.mapHeight - 1)) {
-                  if (!exits.includes("down")) {
-                    if (this.areaMap[y + 1][x] == null) {
-                      this.areaMap[y][x] = this.switchAreaType(this.areaMap[y][x], "down");
-                      areaReplaced = true;
-                      break loop2;
-                    }
+              }
+              if (this.areaMap[y][x].y < (mapGenerator.mapHeight - 1)) {
+                if (!exits.includes("down")) {
+                  if (this.areaMap[y + 1][x] == null) {
+                    this.areaMap[y][x] = this.switchAreaType(this.areaMap[y][x], "down");
+                    areaReplaced = true;
+                    break loop2;
                   }
                 }
-                if (this.areaMap[y][x].x > 0) {
-                  if (!exits.includes("left")) {
-                    if (this.areaMap[y][x - 1] == null) {
-                      this.areaMap[y][x] = this.switchAreaType(this.areaMap[y][x], "left");
-                      areaReplaced = true;
-                      break loop2;
-                    }
+              }
+              if (this.areaMap[y][x].x > 0) {
+                if (!exits.includes("left")) {
+                  if (this.areaMap[y][x - 1] == null) {
+                    this.areaMap[y][x] = this.switchAreaType(this.areaMap[y][x], "left");
+                    areaReplaced = true;
+                    break loop2;
                   }
                 }
-                if (this.areaMap[y][x].x < (mapGenerator.mapWidth - 1)) {
-                  if (!exits.includes("right")) {
-                    if (this.areaMap[y][x + 1] == null) {
-                      this.areaMap[y][x] = this.switchAreaType(this.areaMap[y][x], "right");
-                      areaReplaced = true;
-                      break loop2;
-                    }
+              }
+              if (this.areaMap[y][x].x < (mapGenerator.mapWidth - 1)) {
+                if (!exits.includes("right")) {
+                  if (this.areaMap[y][x + 1] == null) {
+                    this.areaMap[y][x] = this.switchAreaType(this.areaMap[y][x], "right");
+                    areaReplaced = true;
+                    break loop2;
                   }
                 }
               }
             }
           }
+        }
         if (areaReplaced == true) {
           break loop1;
         }
@@ -106,8 +109,7 @@ class MapGenerator {
               exitsInNewArea = false;
             }
           });
-        }
-        else{
+        } else {
           exitsInNewArea = false;
         }
         if (exitsInNewArea) {

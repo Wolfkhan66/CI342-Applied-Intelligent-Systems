@@ -22,49 +22,65 @@ class UI {
     this.createText("heightText", "InGame", 70, 565, mapGenerator.mapHeight, 18);
     this.createSprite("heightUpButton", "InGame", 100, 553, 21, 19, 'buttonUp');
     this.addEvent("heightUpButton", null, function() {
-      mapGenerator.mapHeight++;
-      ui.setText("heightText", mapGenerator.mapHeight);
+      if (mapGenerator.mapHeight < 40) {
+        mapGenerator.mapHeight++;
+        ui.setText("heightText", mapGenerator.mapHeight);
+      }
     });
     this.createSprite("heightDownButton", "InGame", 100, 576, 21, 19, 'buttonDown');
     this.addEvent("heightDownButton", null, function() {
-      mapGenerator.mapHeight--;
-      ui.setText("heightText", mapGenerator.mapHeight);
+      if (mapGenerator.mapHeight > 3) {
+        mapGenerator.mapHeight--;
+        ui.setText("heightText", mapGenerator.mapHeight);
+      }
     });
 
     this.createText("widthText", "InGame", 184, 565, mapGenerator.mapWidth, 18);
     this.createSprite("widthUpButton", "InGame", 214, 553, 21, 19, 'buttonUp');
     this.addEvent("widthUpButton", null, function() {
-      mapGenerator.mapWidth++;
-      ui.setText("widthText", mapGenerator.mapWidth);
+      if (mapGenerator.mapWidth < 40) {
+        mapGenerator.mapWidth++;
+        ui.setText("widthText", mapGenerator.mapWidth);
+      }
     });
     this.createSprite("widthDownButton", "InGame", 214, 576, 21, 19, 'buttonDown');
     this.addEvent("widthDownButton", null, function() {
-      mapGenerator.mapWidth--;
-      ui.setText("widthText", mapGenerator.mapWidth);
+      if (mapGenerator.mapWidth > 3) {
+        mapGenerator.mapWidth--;
+        ui.setText("widthText", mapGenerator.mapWidth);
+      }
     });
 
     this.createText("minimumText", "InGame", 298, 565, mapGenerator.minimumAreas, 18);
     this.createSprite("minimumUpButton", "InGame", 328, 553, 21, 19, 'buttonUp');
     this.addEvent("minimumUpButton", null, function() {
-      mapGenerator.minimumAreas++;
-      ui.setText("minimumText", mapGenerator.minimumAreas);
+      if (mapGenerator.minimumAreas < (mapGenerator.mapWidth * mapGenerator.mapHeight)) {
+        mapGenerator.minimumAreas++;
+        ui.setText("minimumText", mapGenerator.minimumAreas);
+      }
     });
     this.createSprite("minimumDownButton", "InGame", 328, 576, 21, 19, 'buttonDown');
     this.addEvent("minimumDownButton", null, function() {
-      mapGenerator.minimumAreas--;
-      ui.setText("minimumText", mapGenerator.minimumAreas);
+      if (mapGenerator.minimumAreas > 1) {
+        mapGenerator.minimumAreas--;
+        ui.setText("minimumText", mapGenerator.minimumAreas);
+      }
     });
 
     this.createText("areaSizeText", "InGame", 412, 565, gameWorld.areaSize, 18);
     this.createSprite("areaSizeUpButton", "InGame", 442, 553, 21, 19, 'buttonUp');
     this.addEvent("areaSizeUpButton", null, function() {
-      gameWorld.areaSize++;
-      ui.setText("areaSizeText", gameWorld.areaSize);
+      if (gameWorld.areaSize < 10) {
+        gameWorld.areaSize++;
+        ui.setText("areaSizeText", gameWorld.areaSize);
+      }
     });
     this.createSprite("areaSizeDownButton", "InGame", 442, 576, 21, 19, 'buttonDown');
     this.addEvent("areaSizeDownButton", null, function() {
-      gameWorld.areaSize--;
-      ui.setText("areaSizeText", gameWorld.areaSize);
+      if (gameWorld.areaSize > 3) {
+        gameWorld.areaSize--;
+        ui.setText("areaSizeText", gameWorld.areaSize);
+      }
     });
 
     this.createSprite("zoomInButton", "InGame", 768, 553, 21, 19, 'buttonUp');
