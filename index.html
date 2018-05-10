@@ -14,35 +14,45 @@
 	<div class="col-md-8">
 		<div class="row">
 			<div class="col-md-12">
-				<div class="panel panel-default">
+				<div class="panel panel-primary">
 					<div class="panel-heading"><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span> Map Generator and A* pathfinder</div>
-					<div class="panel-body text-center">
-						I created this website for my university Applied Intelligent Systems module.
+					<div class="panel-body">
+						<p>
+							This Phaser.io game was created for my Applied Intelligent Systems module at university. The purpose of this game was to revamp an old project i developed in first year with little knowledge of programming.
+						</p>
+						<p>
+							The map generator works by creating a world filled with 1 of 16 area types. Each area has upto 4 exits and or boundries facing up,
+							down, left or right. Using these 16 types an array is created of a set height and width and areas are placed one after the other to connect them together, until no mmore open exits are available. If the minimum amount of areas has not been met,
+							then an area with less than 4 exits is found which has a blank area in the missing direction. It is then replaced with an area that has the same exits plus that direction. The process the repeats until the minimum is met, thus completing the map.
+						</p>
+						<p>
+							To prove that the map is valid and all parts of the map are in fact reachable, an A* algorithm has been implemented on to a sprite in the map, that will pathfind and move to a target set by you. The implementation for the algorithm was built Using pseudo
+							code found in this article: https://www.raywenderlich.com/4946/introduction-to-a-pathfinding
+						</p>
 					</div>
 				</div>
 			</div>
 		</div>
 		<p></p>
 		<div class="row">
-			<div class="col-md-9">
-				<div class="panel panel-primary">
-					<div class="panel-heading"></div>
-					<div class="panel-body well-lg">
-						<div id="GameWindow">
-						</div>
-					</div>
+			<div class="col-md-offset-2">
+				<div id="GameWindow">
 				</div>
 			</div>
-			<div class="col-md-3">
-				<div class="panel panel-info">
-					<div class="panel-heading"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Instructions </div>
+		</div>
+		<div class="row">
+			<p></p>
+			<div class="col-md-12">
+				<div class="panel panel-primary">
+					<div class="panel-heading"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Instructions: </div>
 					<div class="panel-body well-sm">
 						<div>
 							<ul>
-								<li>Use the arrow keys to move the camera</li>
-								<li>You can zoom in and out using the UI buttons or the mouse wheel</li>
+								<li>You can use the arrow keys on your keyboard to move the camera.</li>
+								<li>You can zoom in and out using the UI buttons on the right hand side of the toolbar, or use the mouse wheel.</li>
 								<li>Click anywhere to set a target for AI. Using A* the AI will move to the target. </li>
-								<li>You can tweak the map height, width, area size and the minimum number of areas using the UI buttons </li>
+								<li>You can tweak the map height, width, area size and the minimum number of areas using the UI buttons.</li>
+								<li>Some limits have been applied to how high you can set these variables simply to prevent a low frame rate if the map has a lot of tiles.</li>
 							</ul>
 						</div>
 					</div>
