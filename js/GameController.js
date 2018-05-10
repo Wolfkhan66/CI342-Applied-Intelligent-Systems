@@ -20,9 +20,9 @@ function preload() {
   game.load.image('ai', 'assets/ai.png');
   game.load.image('target', 'assets/target.png');
   game.load.image('toolbar', 'assets/toolbar.png');
-  game.load.image('buttonDown','assets/buttonDown.png');
+  game.load.image('buttonDown', 'assets/buttonDown.png');
   game.load.image('buttonUp', 'assets/buttonUp.png');
-  game.load.image('newMapDown','assets/newMapDown.png');
+  game.load.image('newMapDown', 'assets/newMapDown.png');
   game.load.image('newMapUp', 'assets/newMapUp.png');
   console.log("Assets Loaded.");
 }
@@ -44,7 +44,8 @@ function create() {
 }
 
 function mouseWheel(event) {
-  if(game.input.mouse.wheelDelta === Phaser.Mouse.WHEEL_UP) {
+  // Detect movement of the mouse wheel and zoom in or out accordingly
+  if (game.input.mouse.wheelDelta === Phaser.Mouse.WHEEL_UP) {
     gameWorld.assetGroup.scale.x += 0.04;
     gameWorld.assetGroup.scale.y += 0.04;
   } else {
@@ -54,18 +55,20 @@ function mouseWheel(event) {
 }
 
 function update() {
+  // Detect keybourd input for the arrow keys and move the game camera
   var cursors = game.input.keyboard.createCursorKeys();
-  if (cursors.left.isDown && game.camera.x > - 50) {
+  if (cursors.left.isDown && game.camera.x > -50) {
     game.camera.x -= 2;
   }
   if (cursors.right.isDown) {
     game.camera.x += 2;
   }
-  if (cursors.up.isDown && game.camera.y > - 50) {
+  if (cursors.up.isDown && game.camera.y > -50) {
     game.camera.y -= 2;
   }
   if (cursors.down.isDown) {
     game.camera.y += 2;
   }
+
   gameWorld.update();
 }

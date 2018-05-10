@@ -22,8 +22,6 @@ class Area {
         if (this.type === 16) {
           tile = 1;
         } else {
-
-
           this.boundaries.forEach((direction) => {
             switch (direction) {
               case "right":

@@ -7,10 +7,15 @@ class MapGenerator {
   }
 
   createMap() {
+    // In the event that a user raises the minimumAreas to the maximum avialble, but then lowers either height or widthText
+    // minimumAreas is reset to half width * height
     if (this.minimumAreas > (this.mapWidth * this.mapHeight)) {
       this.minimumAreas = (this.mapWidth * this.mapHeight) / 2;
       ui.setText("minimumText", mapGenerator.minimumAreas);
     }
+
+    // prepare the area map and choose a starting tile
+    // fill that tile with a random area from 1 - 15 that has an exit
     this.prepareAreaMap();
     var total = 0;
     var startingArea = {
@@ -18,10 +23,15 @@ class MapGenerator {
       y: this.getRandomInt(1, this.mapHeight - 2)
     };
     this.areaMap[startingArea.y][startingArea.x] = new Area(this.getRandomInt(1, 15), gameWorld.areaSize, startingArea.x, startingArea.y);
-
     var mapComplete = false;
     var currentArea = this.areaMap[startingArea.y][startingArea.x];
+
     while (!mapComplete) {
+      // if the current area is not null, get the adjacent tiles in the direction of the areas exits
+      // fill those tiles with matching areas and set the current area to processed
+      // set current area to one of the new unprocessed areas and repeat the above steps until there are no more area to process
+      // if at this point the minimumAreas has not been met, replace one of the areas next to a blank area with a new area that is unprocessed to include a matching exit
+      // the above steps are then repeated until no more areas are left to process and minimumAreas has been met
       if (currentArea != null) {
         var adjacent = this.getAdjacent(currentArea);
         if (adjacent != null) {
@@ -45,6 +55,10 @@ class MapGenerator {
   }
 
   replaceProcessedArea() {
+    // for each area in the areaMap
+    // see if that area is not null and has less than 4 exits
+    // find out which exits the area is missing and see if areas in those directions are empty
+    // if any of them are then replace the current area with a new one that includes its current exits plus the exit in the direction of the null area.
     var areaReplaced = false;
     loop1:
       for (var y = 0; y < this.mapHeight; y++) {
@@ -98,6 +112,8 @@ class MapGenerator {
   }
 
   switchAreaType(area, direction) {
+    // find an area that includes the current areas exits and the direction of the null tile
+    // return the newarea to replace the old.
     var exitsInNewArea = true;
     var newArea;
     loop:
@@ -120,6 +136,7 @@ class MapGenerator {
   }
 
   prepareAreaMap() {
+    // create an array of map width and height full of null values
     this.areaMap = [];
     var row = [];
     for (var y = 0; y < this.mapHeight; y++) {
@@ -132,6 +149,8 @@ class MapGenerator {
   }
 
   getUnprocessedArea() {
+    // find an unprocessed area in the areamap and return in
+    // if none is found then return null
     var area = null;
     for (var y = 0; y < this.mapHeight; y++) {
       for (var x = 0; x < this.mapWidth; x++) {

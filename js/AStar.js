@@ -17,6 +17,7 @@ class AStar {
 
   calculatePath(startingTile, targetTile, tilemap) {
     this.reset();
+    // starting tile is rounded to avoid issues when a path is calculted in the middle of the AI tween.
     var start = {
       x: Math.round(startingTile.x / gameWorld.tileSize),
       y: Math.round(startingTile.y / gameWorld.tileSize)
@@ -32,22 +33,35 @@ class AStar {
     this.currentTile.h = this.calculateHScore(start, target);
     this.currentTile.f = this.currentTile.g + this.currentTile.h;
 
+    // the following AStar implementation is adapted from pseudo code described in this article: https://www.raywenderlich.com/4946/introduction-to-a-pathfinding
+    // The code has the following steps:
+    // - get the tile with the lowest f Score
+    // - add the tile to the closed lest and remove it from the open list
+    // - check if the tile just added to the closed list is the target
+    // - if it is then a path has been FOUND
+    // - if its not get the tiles adjacent tiles
+    // - for each adjacent tile check if its already in the closed list
+    // - if it is then skip it
+    // - if its not then check if its already in the open list
+    // - if its not in the open list then calculate its scores and add it to the open list
+    // - if it is in the open list then check to see if the path to the current tile has a better f score and if it does, update the parent
+    // - repeat the above steps until a path is found or their are no more tiles to process in the open list
     this.open.push(this.currentTile);
     do {
       this.currentTile = this.getLowestFScore();
-      this.closed.push(this.currentTile); // add the current square to the closed list
+      this.closed.push(this.currentTile);
       var indexOTile = this.open.indexOf(this.currentTile);
-      this.open.splice(indexOTile, 1); // remove it from the open list
-      this.closed.forEach(function(tile) { // if we added the destination to the closed list, we've found a path
-        if (tile.x == target.x && tile.y == target.y) { // PATH FOUND
+      this.open.splice(indexOTile, 1);
+      this.closed.forEach(function(tile) {
+        if (tile.x == target.x && tile.y == target.y) {
           aStar.pathFound = true;
           aStar.path = tile;
         }
       });
-      if (this.pathFound === true) { // break the loop
+      if (this.pathFound === true) {
         break;
       }
-      var adjacentTiles = aStar.getAdjacentTiles(tilemap); // Retrieve all its walkable adjacent tiles
+      var adjacentTiles = aStar.getAdjacentTiles(tilemap);
       adjacentTiles.forEach(function(tile) {
         var tileFoundInClosed = false;
         aStar.closed.forEach(function(closedTile) {
@@ -55,7 +69,7 @@ class AStar {
             tileFoundInClosed = true;
           }
         });
-        if (tileFoundInClosed === true) { // skip the tile
+        if (tileFoundInClosed === true) {
           return;
         }
 
@@ -90,11 +104,15 @@ class AStar {
     if (this.path != null) {
       return aStar.processPath(this.path);
     } else {
+      // this should only happen if there has been an error in map generation that created an unreachable area
       console.log("Path Not Found");
     }
   }
 
   calculateHScore(tile, target) {
+    // take the x and y of the current tile and the target tile and subtract them from one another
+    // if the new x and y are negative then convert them to positive values
+    // add the new x and y together to get the distance to the target which is the h score
     var x = tile.x - target.x;
     var y = tile.y - target.y;
     if (x < 0) {
@@ -121,6 +139,9 @@ class AStar {
   getAdjacentTiles(tilemap) {
     var tiles = [];
 
+    // check tiles that are within the tilemap borders
+    // if those tiles are walkable or in this case a floor tile
+    // add those tiles to the adjacent tiles array and return it
     if (this.currentTile.x > 0) {
       if (tilemap[this.currentTile.y][this.currentTile.x - 1] === 0) {
         tiles.push({
@@ -130,7 +151,7 @@ class AStar {
         })
       }
     }
-    if (this.currentTile.x < ((mapGenerator.mapWidth * gameWorld.areaSize) -1)) {
+    if (this.currentTile.x < ((mapGenerator.mapWidth * gameWorld.areaSize) - 1)) {
       if (tilemap[this.currentTile.y][this.currentTile.x + 1] === 0) {
         tiles.push({
           x: this.currentTile.x + 1,
@@ -161,6 +182,9 @@ class AStar {
   }
 
   processPath(path) {
+    // the path returned is the target tile with the path nested in the parent tiles
+    // here we go through each nested parent and create an array to log each tiles x and y
+    // the reveresed array is then returned to give a path starting from the current tile to the target tile
     var processedPath = [];
     var child = path;
     var gScore = child.g;
