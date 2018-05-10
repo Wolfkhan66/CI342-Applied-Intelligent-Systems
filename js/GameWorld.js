@@ -120,8 +120,31 @@ class GameWorld {
         }
       }
     }
+    this.fillTilemapBounds();
   }
 
+  fillTilemapBounds(){
+    // create wall tiles around the boundary of the tilemap to better show the height and width of the map
+    for (var y = 0; y < mapGenerator.mapHeight * this.areaSize; y++) {
+      for (var x = 0; x < mapGenerator.mapWidth * this.areaSize; x++) {
+        if(x == 0){
+            this.createTile(x, y, 'wall', 1, null);
+        }
+        if(y == 0){
+            this.createTile(x, y, 'wall', 1, null);
+        }
+        if(x ==  (mapGenerator.mapWidth * this.areaSize) -1 )
+        {
+            this.createTile(x, y, 'wall', 1, null);
+        }
+        if(y ==  (mapGenerator.mapHeight * this.areaSize) -1 )
+        {
+            this.createTile(x, y, 'wall', 1, null);
+        }
+      }
+    }
+
+  }
   createTile(x, y, image, type, area) {
     // only create srites for tiles if they are not the area type 16
     // Note: This dramatically improves performance by not wasting memory rendering tiles for blocked off areas
