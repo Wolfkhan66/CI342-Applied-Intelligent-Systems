@@ -74,8 +74,8 @@ class GameWorld {
       if (this.ai == null) {
         this.ai = this.assetGroup.create(((x * this.areaSize) * this.tileSize) + 16, ((y * this.areaSize) * this.tileSize) + 16, 'ai');
       } else {
-        this.ai.x = ((x * this.areaSize) * this.tileSize) + 16;
-        this.ai.y = ((y * this.areaSize) * this.tileSize) + 16;
+        this.ai.x = ((x * this.areaSize) * this.tileSize);
+        this.ai.y = ((y * this.areaSize) * this.tileSize);
         this.ai.bringToTop();
       }
     } else {

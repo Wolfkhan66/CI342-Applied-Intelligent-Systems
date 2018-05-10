@@ -77,7 +77,7 @@ class UI {
     });
     this.createSprite("areaSizeDownButton", "InGame", 442, 576, 21, 19, 'buttonDown');
     this.addEvent("areaSizeDownButton", null, function() {
-      if (gameWorld.areaSize > 3) {
+      if (gameWorld.areaSize > 4) {
         gameWorld.areaSize--;
         ui.setText("areaSizeText", gameWorld.areaSize);
       }
