@@ -1,1 +1,1 @@
-# CI301-Individual-Project
+# CI342-Applied-Intelligent-Systems
