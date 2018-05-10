@@ -70,7 +70,7 @@ class UI {
     this.createText("areaSizeText", "InGame", 412, 565, gameWorld.areaSize, 18);
     this.createSprite("areaSizeUpButton", "InGame", 442, 553, 21, 19, 'buttonUp');
     this.addEvent("areaSizeUpButton", null, function() {
-      if (gameWorld.areaSize < 8) {
+      if (gameWorld.areaSize < 6) {
         gameWorld.areaSize++;
         ui.setText("areaSizeText", gameWorld.areaSize);
       }
