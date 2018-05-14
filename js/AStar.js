@@ -36,7 +36,7 @@ class AStar {
     // the following AStar implementation is adapted from pseudo code described in this article: https://www.raywenderlich.com/4946/introduction-to-a-pathfinding
     // The code has the following steps:
     // - get the tile with the lowest f Score
-    // - add the tile to the closed lest and remove it from the open list
+    // - add the tile to the closed list and remove it from the open list
     // - check if the tile just added to the closed list is the target
     // - if it is then a path has been FOUND
     // - if its not get the tiles adjacent tiles

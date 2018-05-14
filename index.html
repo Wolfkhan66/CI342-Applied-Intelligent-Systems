@@ -21,15 +21,16 @@
 							This Phaser.io game was created for my Applied Intelligent Systems module at university. The purpose of this game was to revamp an old project i developed in first year with little knowledge of programming.
 						</p>
 						<p>
-							The map generator works by creating a world filled with 1 of 16 area types. Each area has upto 4 exits and or boundries facing up,
-							down, left or right. Using these 16 types an array is created of a set height and width and areas are placed one after the other to connect them together, until no mmore open exits are available. If the minimum amount of areas has not been met,
-							then an area with less than 4 exits is found which has a blank area in the missing direction. It is then replaced with an area that has the same exits plus that direction. The process the repeats until the minimum is met, thus completing the map.
+							The map generator works by creating a world filled with 1 of 16 area types. Each area has upto 4 exits and or boundries facing up, down, left or right. Using these 16 types an array is created of a set height and width and areas are placed one after the
+							other to connect them together, until no mmore open exits are available. If the minimum amount of areas has not been met, then an area with less than 4 exits is found which has a blank area in the missing direction. It is then replaced with an
+							area that has the same exits plus that direction. The process the repeats until the minimum is met, thus completing the map.
 						</p>
 						<p>
 							To prove that the map is valid and all parts of the map are in fact reachable, an A* algorithm has been implemented on to a sprite in the map, that will pathfind and move to a target set by you.
 						</p>
-						<p> The implementation for the algorithm was built Using pseudo
-						code found in this article: <a href="https://www.raywenderlich.com/4946/introduction-to-a-pathfinding">https://www.raywenderlich.com/4946/introduction-to-a-pathfinding</a></p>
+						<p>
+							The implementation for the algorithm was built Using pseudo code found in this article: <a href="https://www.raywenderlich.com/4946/introduction-to-a-pathfinding">https://www.raywenderlich.com/4946/introduction-to-a-pathfinding</a>
+						</p>
 					</div>
 				</div>
 			</div>
