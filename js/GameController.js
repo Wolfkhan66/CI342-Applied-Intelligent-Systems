@@ -17,6 +17,7 @@ function preload() {
   // Load game assets \\
   game.load.image('wall', 'assets/wall.png');
   game.load.image('floor', 'assets/floor.png');
+  game.load.image('path', 'assets/path.png');
   game.load.image('ai', 'assets/ai.png');
   game.load.image('target', 'assets/target.png');
   game.load.image('toolbar', 'assets/toolbar.png');

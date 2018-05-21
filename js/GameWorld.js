@@ -6,6 +6,7 @@ class GameWorld {
     this.ai = null;
     this.pathFound = false;
     this.path = [];
+    this.pathTiles = [];
     this.tweenActive = false;
     this.assetGroup = game.add.group();
     this.tilemapArray = [];
@@ -18,6 +19,7 @@ class GameWorld {
     if (this.target != null && this.pathFound == false) {
       this.path = aStar.calculatePath(this.ai, this.target, this.tilemapArray);
       this.pathFound = true;
+      this.showPath();
     }
     if (this.pathFound) {
       // if there is a tile left in the path and a tween is not active
@@ -37,6 +39,18 @@ class GameWorld {
         });
       }
     }
+  }
+
+  showPath() {
+    this.pathTiles.forEach((tile) => {
+      tile.destroy();
+    });
+    this.path.forEach((tile) => {
+      var pathSprite = this.assetGroup.create(tile.x * gameWorld.tileSize, tile.y * gameWorld.tileSize, 'path');
+      gameWorld.pathTiles.push(pathtile)
+    });
+    this.ai.bringToTop();
+    this.target.bringToTop();
   }
 
   cleanUp() {
@@ -123,23 +137,21 @@ class GameWorld {
     this.fillTilemapBounds();
   }
 
-  fillTilemapBounds(){
+  fillTilemapBounds() {
     // create wall tiles around the boundary of the tilemap to better show the height and width of the map
     for (var y = 0; y < mapGenerator.mapHeight * this.areaSize; y++) {
       for (var x = 0; x < mapGenerator.mapWidth * this.areaSize; x++) {
-        if(x == 0){
-            this.createTile(x, y, 'wall', 1, null);
+        if (x == 0) {
+          this.createTile(x, y, 'wall', 1, null);
         }
-        if(y == 0){
-            this.createTile(x, y, 'wall', 1, null);
+        if (y == 0) {
+          this.createTile(x, y, 'wall', 1, null);
         }
-        if(x ==  (mapGenerator.mapWidth * this.areaSize) -1 )
-        {
-            this.createTile(x, y, 'wall', 1, null);
+        if (x == (mapGenerator.mapWidth * this.areaSize) - 1) {
+          this.createTile(x, y, 'wall', 1, null);
         }
-        if(y ==  (mapGenerator.mapHeight * this.areaSize) -1 )
-        {
-            this.createTile(x, y, 'wall', 1, null);
+        if (y == (mapGenerator.mapHeight * this.areaSize) - 1) {
+          this.createTile(x, y, 'wall', 1, null);
         }
       }
     }
