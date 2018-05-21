@@ -47,7 +47,7 @@ class GameWorld {
     });
     this.path.forEach((tile) => {
       var pathSprite = this.assetGroup.create(tile.x * gameWorld.tileSize, tile.y * gameWorld.tileSize, 'path');
-      gameWorld.pathTiles.push(pathtile)
+      gameWorld.pathTiles.push(pathSprite)
     });
     this.ai.bringToTop();
     this.target.bringToTop();
